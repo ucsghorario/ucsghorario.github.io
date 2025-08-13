@@ -3,47 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UCSG - Sistema de Horarios</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Sistema de Gestión de Horarios - UCSG</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    
+    <!-- Local Stylesheets - Offline Compatible -->
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="icons.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="forms.css">
+    <link rel="stylesheet" href="schedule.css">
+    <link rel="stylesheet" href="toast.css">
 </head>
 <body>
     <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
+    <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner">
             <div class="spinner"></div>
             <p>Cargando...</p>
         </div>
     </div>
 
-    <!-- Toast Notifications -->
-    <div class="toast-container" id="toastContainer"></div>
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
 
     <!-- Header -->
     <header class="header">
         <div class="header-content">
             <div class="logo-section">
-                <!-- Para cambiar el logo, reemplaza el archivo assets/logo.svg con tu imagen preferida -->
-                <!-- También puedes cambiar la extensión del archivo (ej: assets/logo.png) -->
-                <img src="assets/logo.svg" alt="UCSG Logo" class="logo">
+                <img src="logo.svg" width=20%>
                 <div class="title-section">
                     <h1>Sistema de Horarios</h1>
                     <p>Universidad Católica de Santiago de Guayaquil</p>
                 </div>
             </div>
-            <div class="user-menu" id="userMenu" style="display: none;">
-                <button class="user-button" id="userButton">
+            
+            <div id="userMenu" class="user-menu">
+                <button id="userButton" class="user-button">
                     <i class="fas fa-user"></i>
-                    <span id="userName"></span>
+                    <span id="userName">Usuario</span>
                     <i class="fas fa-chevron-down"></i>
                 </button>
-                <div class="user-dropdown" id="userDropdown">
-                    <button onclick="logout()" class="dropdown-item">
+                <div class="user-dropdown">
+                    <button class="dropdown-item" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i>
                         Cerrar Sesión
                     </button>
@@ -52,204 +53,211 @@
         </div>
     </header>
 
+    <!-- Main Content -->
     <main class="main-content">
         <!-- Login Screen -->
-        <section class="screen active" id="loginScreen">
-            <div class="login-container">
-                <div class="login-card">
-                    <div class="login-header">
-                        <h2>Bienvenido</h2>
-                        <p>Ingresa a tu cuenta para acceder al sistema</p>
-                        <div class="demo-info">
-                            <small><i class="fas fa-info-circle"></i> <strong>Modo Demostración:</strong> Usa cualquier email @cu.ucsg.edu.ec y contraseña para probar el sistema</small>
-                        </div>
-                    </div>
-                    
-                    <form class="login-form" id="loginForm">
-                        <div class="form-group">
-                            <label for="usuario">Correo Institucional</label>
-                            <div class="input-wrapper">
-                                <i class="fas fa-envelope"></i>
-                                <input 
-                                    type="email" 
-                                    id="usuario" 
-                                    placeholder="nombre.apellido@cu.ucsg.edu.ec"
-                                    required
-                                    autocomplete="email"
-                                >
-                            </div>
-                            <div class="form-error" id="usuarioError"></div>
+        <div id="loginScreen" class="screen active">
+            <div class="container">
+                <div class="login-container">
+                    <div class="login-card">
+                        <div class="login-header">
+                            <img src="logo.svg" width=30% >
+                            <h2>Iniciar Sesión</h2>
+                            <p>Sistema de Gestión de Horarios</p>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="password">Contraseña</label>
-                            <div class="input-wrapper">
-                                <i class="fas fa-lock"></i>
-                                <input 
-                                    type="password" 
-                                    id="password" 
-                                    placeholder="Ingresa tu contraseña"
-                                    required
-                                    autocomplete="current-password"
-                                >
-                                <button type="button" class="toggle-password" id="togglePassword">
-                                    <i class="fas fa-eye"></i>
+                        <form id="loginForm" class="login-form">
+                            <div class="form-group">
+                                <label for="usuario">Correo Institucional</label>
+                                <div class="input-wrapper">
+                                    <input 
+                                        type="email" 
+                                        id="usuario" 
+                                        class="form-input"
+                                        placeholder="usuario@cu.ucsg.edu.ec"
+                                        autocomplete="email"
+                                        required
+                                    >
+                                    <i class="input-icon fas fa-envelope"></i>
+                                </div>
+                                <div id="usuarioError" class="field-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="password">Contraseña</label>
+                                <div class="input-wrapper">
+                                    <input 
+                                        type="password" 
+                                        id="password" 
+                                        class="form-input"
+                                        placeholder="Ingrese su contraseña"
+                                        autocomplete="current-password"
+                                        required
+                                    >
+                                    <button type="button" id="togglePassword" class="input-action">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div id="passwordError" class="field-error"></div>
+                            </div>
+                            
+                            <div class="login-actions">
+                                <button type="button" class="btn btn-primary" onclick="login('estudiante')">
+                                    <i class="fas fa-user-graduate"></i>
+                                    Estudiante
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="login('administrador')">
+                                    <i class="fas fa-user-cog"></i>
+                                    Administrador
                                 </button>
                             </div>
-                            <div class="form-error" id="passwordError"></div>
-                        </div>
-                        
-                        <div class="login-buttons">
-                            <button type="button" class="btn btn-primary" onclick="login('estudiante')">
-                                <i class="fas fa-graduation-cap"></i>
-                                Estudiante
-                            </button>
-                            <button type="button" class="btn btn-secondary" onclick="login('administrador')">
-                                <i class="fas fa-user-shield"></i>
-                                Administrador
-                            </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Student Screen -->
-        <section class="screen" id="studentScreen">
+        <!-- Student Dashboard -->
+        <div id="studentScreen" class="screen">
             <div class="container">
                 <div class="welcome-section">
-                    <div class="welcome-card">
-                        <div class="welcome-content">
-                            <h2>¡Bienvenido!</h2>
-                            <p id="studentWelcomeText">Estudiante UCSG</p>
-                            <div class="student-info">
-                                <div class="info-item">
-                                    <i class="fas fa-graduation-cap"></i>
-                                    <span>Curso: <strong id="studentCourse"></strong></span>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fas fa-calendar-alt"></i>
-                                    <span>Semestre: <strong>2024-1</strong></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <h2 id="studentWelcomeText">¡Bienvenido!</h2>
+                    <p>Curso asignado: <strong id="studentCourse">-</strong></p>
                 </div>
-
-                <div class="schedule-section">
+                
+                <div class="section">
                     <div class="section-header">
-                        <h3>Mi Horario de Clases</h3>
-                        <button class="btn btn-outline" onclick="downloadSchedule()">
-                            <i class="fas fa-download"></i>
-                            Descargar
-                        </button>
-                    </div>
-                    <div class="schedule-container" id="studentSchedule">
-                        <div class="empty-state">
-                            <i class="fas fa-calendar-times"></i>
-                            <h4>No hay horario asignado</h4>
-                            <p>Tu horario será visible una vez que el administrador lo genere para tu curso.</p>
+                        <h3>
+                            <i class="fas fa-calendar-alt"></i>
+                            Mi Horario
+                        </h3>
+                        <div class="header-actions">
+                            <button class="btn btn-outline" onclick="downloadSchedule()">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </button>
                         </div>
+                    </div>
+                    <div id="studentSchedule" class="schedule-container">
+                        <!-- Schedule will be loaded here -->
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Admin Screen -->
-        <section class="screen" id="adminScreen">
+        <!-- Admin Dashboard -->
+        <div id="adminScreen" class="screen">
             <div class="container">
-                <div class="admin-header">
-                    <h2>Panel de Administración</h2>
-                    <p>Gestiona los horarios de los diferentes cursos</p>
-                </div>
-
-                <!-- Saved Schedules -->
+                <!-- Saved Schedules Section -->
                 <div class="section">
                     <div class="section-header">
-                        <h3>Horarios Guardados</h3>
-                        <span class="badge" id="schedulesCount">0</span>
+                        <h3>
+                            <i class="fas fa-save"></i>
+                            Horarios Guardados
+                            <span id="schedulesCount" class="badge">0</span>
+                        </h3>
                     </div>
-                    <div class="saved-schedules-grid" id="savedSchedules">
-                        <div class="empty-state">
-                            <i class="fas fa-folder-open"></i>
-                            <h4>No hay horarios guardados</h4>
-                            <p>Crea tu primer horario para comenzar</p>
-                        </div>
+                    <div id="savedSchedules" class="saved-schedules">
+                        <!-- Saved schedules will be loaded here -->
                     </div>
                 </div>
 
                 <!-- Course Configuration -->
-                <div class="section" id="courseConfigSection">
+                <div id="courseConfigSection" class="section">
                     <div class="section-header">
-                        <h3>Configuración de Curso</h3>
+                        <h3>
+                            <i class="fas fa-cog"></i>
+                            Configuración del Curso
+                        </h3>
                     </div>
-                    
-                    <div class="config-grid">
-                        <div class="form-group">
-                            <label for="curso">Curso</label>
-                            <select id="curso" class="form-select">
-                                <option value="">Seleccionar curso</option>
-                                <option value="A">Curso A</option>
-                                <option value="B">Curso B</option>
-                                <option value="C">Curso C</option>
-                                <option value="D">Curso D</option>
-                            </select>
+                    <div class="config-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="curso">Curso</label>
+                                <select id="curso" class="form-select" required>
+                                    <option value="">Seleccionar curso</option>
+                                    <option value="A">Curso A</option>
+                                    <option value="B">Curso B</option>
+                                    <option value="C">Curso C</option>
+                                    <option value="D">Curso D</option>
+                                    <option value="E">Curso E</option>
+                                    <option value="F">Curso F</option>
+                                </select>
+                                <div id="cursoError" class="field-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="carrera">Carrera</label>
+                                <select id="carrera" class="form-select" required>
+                                    <option value="">Seleccionar carrera</option>
+                                    <option value="Ingeniería en Sistemas">Ingeniería en Computación</option>
+                                    <option value="Ingeniería Industrial">Ingeniería Civil
+                                    <option value="Administración de Empresas">Administración de Empresas</option>
+                                    <option value="Contabilidad y Auditoría">Contabilidad y Auditoría</option>
+                                    <option value="Derecho">Derecho</option>
+                                    <option value="Medicina">Medicina</option>
+                                    <option value="Psicología">Psicología</option>
+                                    <option value="Arquitectura">Arquitectura</option>
+                                    <option value="Comunicación Social">Comunicación Social</option>
+                                    <option value="Marketing">Marketing</option>
+                                </select>
+                                <div id="carreraError" class="field-error"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="numMaterias">Número de Materias</label>
+                                <select id="numMaterias" class="form-select" required>
+                                    <option value="">Seleccionar cantidad</option>
+                                    <option value="3">3 materias</option>
+                                    <option value="4">4 materias</option>
+                                    <option value="5">5 materias</option>
+                                    <option value="6">6 materias</option>
+                                    <option value="7">7 materias</option>
+                                    <option value="8">8 materias</option>
+                                </select>
+                                <div id="numMateriasError" class="field-error"></div>
+                            </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="carrera">Carrera</label>
-                            <select id="carrera" class="form-select">
-                                <option value="">Seleccionar carrera</option>
-                                <option value="Ingeniería">Ingeniería</option>
-                                <option value="Medicina">Medicina</option>
-                                <option value="Derecho">Derecho</option>
-                                <option value="Administración">Administración</option>
-                                <option value="Psicología">Psicología</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="numMaterias">Número de Materias</label>
-                            <select id="numMaterias" class="form-select">
-                                <option value="">Seleccionar cantidad</option>
-                                <option value="3">3 materias</option>
-                                <option value="4">4 materias</option>
-                                <option value="5">5 materias</option>
-                                <option value="6">6 materias</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <button class="btn btn-primary" onclick="generateSubjectFields()">
-                        <i class="fas fa-plus"></i>
-                        Configurar Materias
-                    </button>
-                </div>
-
-                <!-- Subjects Configuration -->
-                <div class="section hidden" id="subjectsSection">
-                    <div class="section-header">
-                        <h3>Asignación de Materias y Profesores</h3>
-                        <button class="btn btn-outline" onclick="goBackToConfig()">
-                            <i class="fas fa-arrow-left"></i>
-                            Volver
+                        <button type="button" class="btn btn-primary" onclick="generateSubjectFields()">
+                            <i class="fas fa-arrow-right"></i>
+                            Continuar
                         </button>
                     </div>
-                    
-                    <div class="subjects-grid" id="subjectsContainer"></div>
-                    
+                </div>
+
+                <!-- Subject Configuration -->
+                <div id="subjectsSection" class="section hidden">
+                    <div class="section-header">
+                        <h3>
+                            <i class="fas fa-book"></i>
+                            Configuración de Materias
+                        </h3>
+                        <div class="header-actions">
+                            <button class="btn btn-outline" onclick="goBackToConfig()">
+                                <i class="fas fa-arrow-left"></i>
+                                Volver
+                            </button>
+                        </div>
+                    </div>
+                    <div id="subjectsContainer" class="subjects-container">
+                        <!-- Subject fields will be generated here -->
+                    </div>
                     <div class="section-actions">
-                        <button class="btn btn-primary" onclick="proceedToSchedule()">
+                        <button type="button" class="btn btn-primary" onclick="proceedToSchedule()">
                             <i class="fas fa-calendar-plus"></i>
-                            Continuar a Horario
+                            Generar Horario
                         </button>
                     </div>
                 </div>
 
                 <!-- Schedule Generation -->
-                <div class="section hidden" id="scheduleSection">
+                <div id="scheduleSection" class="section hidden">
                     <div class="section-header">
-                        <h3>Generación de Horario</h3>
+                        <h3>
+                            <i class="fas fa-calendar-alt"></i>
+                            Generar Horario
+                        </h3>
                         <div class="header-actions">
                             <button class="btn btn-outline" onclick="goBackToSubjects()">
                                 <i class="fas fa-arrow-left"></i>
@@ -264,39 +272,40 @@
                             <select id="horaInicio" class="form-select">
                                 <option value="07:00">07:00 AM</option>
                                 <option value="08:00">08:00 AM</option>
-                                <option value="09:00">09:00 AM</option>
+                                <option value="09:00" selected>09:00 AM</option>
                                 <option value="10:00">10:00 AM</option>
                             </select>
                         </div>
                         
-                        <div class="schedule-actions">
-                            <button class="btn btn-primary" onclick="generateSchedule()">
-                                <i class="fas fa-sync-alt"></i>
-                                Generar Horario
-                            </button>
-                            <button class="btn btn-success hidden" id="saveScheduleBtn" onclick="saveSchedule()">
-                                <i class="fas fa-save"></i>
-                                Guardar Horario
-                            </button>
-                        </div>
+                        <button type="button" class="btn btn-primary" onclick="generateSchedule()">
+                            <i class="fas fa-magic"></i>
+                            <span class="btn-text">Generar Horario</span>
+                            <span class="btn-spinner hidden">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                Generando...
+                            </span>
+                        </button>
                     </div>
                     
-                    <div class="schedule-preview" id="schedulePreview">
-                        <div class="empty-state">
-                            <i class="fas fa-calendar-plus"></i>
-                            <h4>Generar Horario</h4>
-                            <p>Haz clic en "Generar Horario" para crear la distribución de clases</p>
-                        </div>
+                    <div id="schedulePreview" class="schedule-preview">
+                        <!-- Generated schedule will appear here -->
+                    </div>
+                    
+                    <div class="schedule-actions">
+                        <button id="saveScheduleBtn" class="btn btn-success hidden" onclick="saveSchedule()">
+                            <i class="fas fa-save"></i>
+                            Guardar Horario
+                        </button>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
     <!-- Scripts -->
-    <script src="js/utils.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/schedule.js"></script>
-    <script src="js/app.js"></script>
+    <script src="utils.js"></script>
+    <script src="auth.js"></script>
+    <script src="schedule.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
